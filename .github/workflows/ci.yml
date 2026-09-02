@@ -20,6 +20,7 @@ jobs:
         run: |
           pip install -r user-service/requirements.txt
           pip install -r order-service/requirements.txt
+          pip install pytest httpx
 
       - name: Run User Service tests
         run: |
