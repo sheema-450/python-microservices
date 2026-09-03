@@ -37,3 +37,21 @@ jobs:
 
       - name: Build Order Service Docker image
         run: docker build -t order-service:ci ./order-service
+
+      - name: Scan User Service image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: user-service:ci
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+      - name: Scan Order Service image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: order-service:ci
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
