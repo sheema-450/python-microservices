@@ -19,8 +19,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r user-service/requirements.txt
-          pip install -r order-service/requirements.txt
           pip install pytest httpx
+          pip install -r order-service/requirements.txt
 
       - name: Run User Service tests
         run: |
@@ -33,10 +33,18 @@ jobs:
           pytest
 
       - name: Build User Service Docker image
-        run: docker build -t user-service:ci ./user-service
+        run: docker build --no-cache -t user-service:ci ./user-service
+
+      - name: Check User Service package versions
+        run: |
+          docker run --rm user-service:ci pip show jaraco.context wheel
 
       - name: Build Order Service Docker image
-        run: docker build -t order-service:ci ./order-service
+        run: docker build --no-cache -t order-service:ci ./order-service
+
+      - name: Check Order Service package versions
+        run: |
+          docker run --rm order-service:ci pip show jaraco.context wheel
 
       - name: Scan User Service image
         uses: aquasecurity/trivy-action@master
